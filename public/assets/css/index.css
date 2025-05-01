@@ -99,12 +99,12 @@
 
 .stats div {
     border-right: 0.0625rem solid #dddddd;
-    width: 33.33333%;
+    width: 25%;
     float: left;
     text-align: center
 }
 
-.stats div:nth-of-type(3) {
+.stats div:nth-of-type(4) {
     border: none;
 }
 

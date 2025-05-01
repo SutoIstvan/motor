@@ -1,6 +1,13 @@
 @extends('layouts.pages')
 
+@section('title', 'Márka Motorcenter - ' .$motor->name)
+@section('description', $motor->description)
+
 @section('stylesheet')
+<meta property="og:title"              content="{{ $motor->title }}" />
+{{-- <meta property="og:description"        content="How much does culture influence creative thinking?" /> --}}
+<meta property="og:image"              content="{{ asset( $motor->main_image) }}" />
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 
     <style>
@@ -49,7 +56,10 @@
                     <span>/</span>
                     <a href="{{ route('motors') }}" class="" style="color: #666; text-decoration: none;">Motorok</a>
                     <span>/</span>
-                    <a href="{{ route('search', ['categories[]' => $motor->category->id]) }}" class="" style="color: #666; text-decoration: none;">{{ $motor->category->name }}</a>
+                    <a href="{{ route('motors', ['category_id[]' => $motor->category->id]) }}" class="" style="color: #666; text-decoration: none;">{{ $motor->category->name }}</a>
+                    <span>/</span>
+                    <a href="{{ route('motors', ['brand_id[]' => $motor->brand->id]) }}" class="" style="color: #666; text-decoration: none;">{{ $motor->brand->name }}</a>
+
                   </h6>
                 </nav>
             </div>
@@ -131,11 +141,18 @@
                     <main class="col-lg-6">
                         <div class="container">
                             <h4 class="title text-dark mt-2">
-                                {{ $motor->name }}
+                               {{ $motor->name }}
                             </h4>
                             <div class="mb-3 mt-3">
                                 <span class="h5 text-danger">{{ number_format($motor->price, 0, '.', ' ') }} Ft</span>
                                 <span style="color: #666; text-decoration: none;">/ {{ number_format($motor->price / $euro, 0, '.', ' ') }} €</span>
+
+                                @if($motor->discount_price)
+                                    <span class="price ms-3" style="text-decoration: line-through; font-size: 14px;">
+                                        {{ number_format($motor->discount_price, 0, '.', ' ') }} Ft
+                                        <span style="color: #666; text-decoration: none;">/ régi ár</span>
+                                    </span>
+                                @endif
                             </div>
                             <p>
                                 {{ $motor->short_description }}
@@ -152,17 +169,17 @@
                                 <dd class="col-6">{{ $motor->category->name }}</dd>
 
                                 <dt class="col-6">Évjárat:</dt>
-                                <dd class="col-6">{{ $motor->year }}</dd>
+                                <dd class="col-6">{{ $motor->year }} {{ $motor->driver_license }}</dd>
                             </div>
 
                             <!-- <hr /> -->
 
                             <div class="row">
                                 <dt class="col-6">Futott km:</dt>
-                                <dd class="col-6">{{ $motor->km }}</dd>
+                                <dd class="col-6">{{ number_format($motor->km, 0, '', ' ') }}</dd>
 
                                 <dt class="col-6">Teljesítmény:</dt>
-                                <dd class="col-6">{{ $motor->performance }}</dd>
+                                <dd class="col-6">{{ $motor->performance }} kW ({{ round($motor->performance * 1.36) }} LE)</dd>
 
                                 <dt class="col-6">Állapot:</dt>
                                 <dd class="col-6">{{ $motor->condition }}</dd>
@@ -170,7 +187,7 @@
 
                             <div>
                                 Amennyiben felkeltette érdeklődését, kérjük lépjen kapcsolatba velünk az alábbi telefonszámon
-                                <a href="tel:(+61383766284)" class="text-decoration-none">
+                                <a href="tel:( {{ $contacts->phone }} )" class="text-decoration-none">
                                     {{ $contacts->phone }}
                                 </a>
                                 és
@@ -204,27 +221,27 @@
                                     {{-- <a href="https://www.facebook.com/sharer/sharer.php?u=#url" target="_blank">
                                         Share
                                     </a> --}}
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u=http://muka.neeka.org/motor.html" class="btn btn-outline-primary btn-sm" target="_blank" >
-                                        <i class="fa-brands fa-facebook"></i>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.markamotor.hu/motor/{{$motor->id}}" class="btn btn-outline-secondary btn-sm mb-2" target="_blank" >
+                                        <i class="fa-brands fa-facebook" style="color: blue;"></i>
                                         Facebook
                                     </a>
 
-                                    <a href="#" class="btn btn-outline-primary btn-sm" target="_blank" >
-                                        <i class="fa-brands fa-instagram"></i>
-                                        instagram
-                                    </a>
-
-                                    <a id="viber_share" class="btn btn-outline-primary btn-sm">
-                                        <i class="fa-brands fa-viber"></i>
+                                    <a id="viber_share" class="btn btn-outline-secondary btn-sm mb-2">
+                                        <i class="fa-brands fa-viber" style="color: rgb(129, 0, 168);"></i>
                                         Viber
                                     </a>
 
-                                    {{-- <a class="mb-3" id="viber_share">Viber</a> --}}
-
-                                    <a class="btn btn-outline-primary btn-sm">
-                                        <i class="fa-brands fa-twitter"></i>
-                                        Twitter
+                                    <a id="whatsappShareButton" class="btn btn-outline-secondary btn-sm mb-2" href="#" target="_blank">
+                                        {{-- <i class="fab fa-whatsapp-square" style="color: rgb(12, 214, 12);"></i> --}}
+                                        <i class="fa-brands fa-whatsapp" style="color: rgb(12, 214, 12);"></i>
+                                        WhatsApp
                                     </a>
+
+                                    <a id="copyLinkButton" class="btn btn-outline-secondary btn-sm mb-2">
+                                        <i class="fa-regular fa-copy"></i>
+                                        link másolása
+                                    </a>
+
                                 </div>
 
                             </div>
@@ -246,9 +263,7 @@
             <div class="row gx-4">
                 <div class="mb-4">
                     <div class="px-3 py-2 bg-white ">
-                        <p class="text-center" style="font-size: 15px;">
-                            {{ $motor->description }}
-                        </p>
+                            {!! $motor->description !!}
                     </div>
                 </div>
             </div>
@@ -271,6 +286,49 @@
         autoplayVideos: true,
         closeOnOutsideClick: true,
     });
+
+    // Copy lynk
+    document.getElementById('copyLinkButton').addEventListener('click', function() {
+        // Получаем текущий URL страницы
+        const pageUrl = window.location.href;
+        
+        // Создаем временный элемент для копирования текста
+        const tempInput = document.createElement('input');
+        tempInput.value = pageUrl;
+        document.body.appendChild(tempInput);
+        
+        // Выделяем текст и копируем его в буфер обмена
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999); // Для мобильных устройств
+        
+        // Копируем текст
+        document.execCommand('copy');
+        
+        // Удаляем временный элемент
+        document.body.removeChild(tempInput);
+
+        // Отображаем сообщение о копировании
+        // alert('Ссылка скопирована в буфер обмена: ' + pageUrl);
+    });
+
+    // WhatsApp Share 
+    document.getElementById('whatsappShareButton').addEventListener('click', function(event) {
+        // Предотвращаем переход по ссылке
+        event.preventDefault();
+
+        // Получаем текущий URL страницы
+        const pageUrl = window.location.href;
+
+        // Текст сообщения для отправки в WhatsApp
+        const message = 'Motor: ' + pageUrl;
+
+        // Ссылка для отправки сообщения в WhatsApp
+        const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(message);
+
+        // Открываем WhatsApp с текстом сообщения
+        window.open(whatsappUrl, '_blank');
+    });
+
 </script>
 
 <!-- Viber -->

@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('perPage', 5);
+        $perPage = $request->input('perPage', 25);
         $categories = Category::paginate($perPage);
 
         return view('admin.category.index' , compact('categories'));

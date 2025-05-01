@@ -2,6 +2,23 @@
 
 @section('title', 'Motor')
 
+@section('css')
+<style>
+    .note-btn.dropdown-toggle:after {
+        content: none;
+    }
+    .note-dropdown-menu {
+        min-width: 368px !important;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-hu-HU.min.js" integrity="sha512-jGhbe/5rvn7nWezY4crH/Qys+oJxOHCv9ACxjyys/pHGN/wbsnQRzBFfe9rHiF5qHKtksFFQ6VljJLH8nfruMw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+@stop
+
 @section('content_header')
     <h3></h3>
 @stop
@@ -68,7 +85,7 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-form-label">Részletes leírás</label>
                     <div class="col-sm-12">
-                        <textarea name="description" class="form-control" id="description" rows="5" placeholder="Ad meg a motor leirását" maxlength="8000" minlength="3" required>{{ old('description') }}</textarea>
+                        <textarea name="description" class="form-control" class="summernote" id="summernote" rows="5" placeholder="Ad meg a motor leirását" maxlength="8000" minlength="3" required>{{ old('description') }}</textarea>
 
                         {{-- <input name="description" class="form-control" id="description" value="{{ old('description') }}"
                             placeholder="Ad meg a motor leirását" maxlength="8000" minlength="3" required> --}}
@@ -91,6 +108,23 @@
                                    placeholder="Ad meg a motor évjáratát" maxlength="80" minlength="2" required>
                         </div>
                     </div>
+                    <!-- <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Vezetői engedély</label>
+                            <select name="driver_license" class="form-control">
+                                    <option value="yes">Szükséges</option>
+                                    <option value="no">Nem szükséges</option>
+                            </select>
+                        </div>
+                    </div> -->
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Dátum</label>
+                            <input name="driver_license" class="form-control" id="driver_license"
+                            value="{{ old('driver_license') }}" placeholder="Ad meg a motor dátumát" maxlength="80"
+                            minlength="1">
+                        </div>
+                    </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label>Munkaütem</label>
@@ -99,14 +133,14 @@
                             minlength="1">
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <!-- <div class="col-sm-4">
                         <div class="form-group">
                             <label>Hengerűrtartalom</label>
                             <input name="cylinders_cm3" class="form-control" id="cylinders_cm3"
                             value="{{ old('cylinders_cm3') }}" placeholder="Ad meg a motor hengerűrtartalmát" maxlength="80"
                             minlength="1">
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
 
@@ -128,12 +162,13 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label>Állapot</label>
-                            <input name="condition" class="form-control" id="condition"
-                            value="{{ old('condition') }}" placeholder="Ad meg a motor állapotát" maxlength="80"
+                            <label>Hengerűrtartalom</label>
+                            <input name="cylinders_cm3" class="form-control" id="cylinders_cm3"
+                            value="{{ old('cylinders_cm3') }}" placeholder="Ad meg a motor hengerűrtartalmát" maxlength="80"
                             minlength="1">
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row">
@@ -160,13 +195,21 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
+                            <label>Állapot</label>
+                            <input name="condition" class="form-control" id="condition"
+                            value="{{ old('condition') }}" placeholder="Ad meg a motor állapotát" maxlength="80"
+                            minlength="1">
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-4">
+                        <div class="form-group">
                             <label>Vezetői engedély</label>
                             <select name="driver_license" class="form-control">
                                     <option value="yes">Szükséges</option>
                                     <option value="no">Nem szükséges</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="form-group">
@@ -205,6 +248,68 @@
     </div>
 </div>
 
+<script>
+            $('#summernote').summernote({
+                height: 150,
+                lang: 'hu-HU',
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']]
+                ]
+            });
+
+            
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const discount_priceInput = document.getElementById('discount_price');
+
+                discount_priceInput.addEventListener('input', function (e) {
+                    // Удаляем все пробелы
+                    let value = e.target.value.replace(/\s+/g, '');
+
+                    // Проверяем, что это число
+                    if (!isNaN(value)) {
+                        // Добавляем пробелы каждые три цифры
+                        e.target.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                    } else {
+                        // Если введено не число, очищаем поле
+                        e.target.value = '';
+                    }
+                });
+
+                // Форматируем поле при загрузке (если есть старое значение)
+                if (discount_priceInput.value) {
+                    discount_priceInput.value = discount_priceInput.value.replace(/\s+/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                }
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const priceInput = document.getElementById('price');
+
+                priceInput.addEventListener('input', function (e) {
+                    // Удаляем все пробелы
+                    let value = e.target.value.replace(/\s+/g, '');
+
+                    // Проверяем, что это число
+                    if (!isNaN(value)) {
+                        // Добавляем пробелы каждые три цифры
+                        e.target.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                    } else {
+                        // Если введено не число, очищаем поле
+                        e.target.value = '';
+                    }
+                });
+
+                // Форматируем поле при загрузке (если есть старое значение)
+                if (priceInput.value) {
+                    priceInput.value = priceInput.value.replace(/\s+/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                }
+            });
+</script>
 
 @stop
 {{--

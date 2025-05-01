@@ -15,6 +15,10 @@
             <a href="{{ route('admin.motor.create') }}" class="btn btn-success mb-3">
                 <i class="fas fa-plus-square"></i> Motor hozáadasa
             </a>
+            <a href="{{ route('admin.motor.archive') }}" class="btn btn-danger mb-3">
+                <i class="fas fa-trash"></i> Kuka
+            </a>
+        
         </div>
         <div class="col-sm-8 mt-3">
             @if (session('success'))
@@ -35,15 +39,52 @@
                     <h3 class="card-title">Motor lista</h3>
                 </div>
 
-                <div class="float-right">
+
+
+                <div class="float-right ">
                     <form method="get" action="{{ url()->current() }}">
-                        <select class="form-control form-control-sm" name="perPage" id="perPage" onchange="this.form.submit()">
-                            <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
-                            <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
-                            <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
+                        <select class="form-control form-control-sm" name="orderBy" id="orderBy" onchange="this.form.submit()">
+                            <option value="name_asc" {{ request('orderBy') === 'name_asc' ? 'selected' : '' }}>Név (A-Z)</option>
+                            <option value="name_desc" {{ request('orderBy') === 'name_desc' ? 'selected' : '' }}>Név (Z-A)</option>
+                            <option value="updated_at_desc" {{ request('orderBy') === 'updated_at_desc' ? 'selected' : '' }}>Frissítés dátuma (csökkenő sorrendben)</option>
+                            <option value="updated_at" {{ request('orderBy') === 'updated_at' ? 'selected' : '' }}>Frissítés dátuma (növekvő sorrendben)</option>
                         </select>
+                        <input type="hidden" name="perPage" value="{{ request('perPage', 1000) }}">
+
                     </form>
                 </div>
+
+                <div class="float-right mr-3">
+                    <form method="get" action="{{ url()->current() }}">
+                        <select class="form-control form-control-sm" name="perPage" id="perPage" onchange="this.form.submit()">
+                            <option value="1000" {{ request('perPage') == 1000 ? 'selected' : '' }}>1000</option>
+
+                            <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                            {{-- <option value="1000" {{ request('perPage') == 1000 ? 'selected' : '' }}>1000</option> --}}
+                        </select>
+                        <input type="hidden" name="orderBy" value="{{ request('orderBy', 'name_asc') }}">
+
+                    </form>
+                </div>
+
+                {{-- <div class="float-right mr-3">
+                    <form method="get" action="{{ url()->current() }}">
+                        <select class="form-control form-control-sm" name="orderBy" id="orderBy" onchange="this.form.submit()">
+                            <option value="created_at" {{ request('orderBy') === 'created_at' ? 'selected' : '' }}>Дата створення</option>
+                            <option value="name_asc" {{ request('orderBy') === 'name_asc' ? 'selected' : '' }}>Ім'я (від "а" до "я")</option>
+                            <option value="name_desc" {{ request('orderBy') === 'name_desc' ? 'selected' : '' }}>Ім'я (від "я" до "а")</option>
+                            <option value="updated_at_asc" {{ request('orderBy') === 'updated_at_asc' ? 'selected' : '' }}>Дата оновлення (за зростанням)</option>
+                            <option value="updated_at_desc" {{ request('orderBy') === 'updated_at_desc' ? 'selected' : '' }}>Дата оновлення (за спаданням)</option>
+                        </select>
+                        <input type="hidden" name="perPage" value="{{ request('perPage') }}">
+                    </form>
+                </div> --}}
+
+
+
+
             </div>
         </div>
 
@@ -62,9 +103,9 @@
                     @foreach ($motors as $motor)
                         <tr>
                             <td style="width: 110px;">
-                                <img src="{{ asset($motor->main_image) }}" class="" alt="..." style="width: 70px;">
+                                <img src="{{ asset($motor->main_image) }}" class="zoom-on-hover" alt="..." style="width: 70px;">
                             </td>
-                            <td><a href="{{ route('motor.show', $motor) }}">{{ $motor->name }}</a> <br> <small>{{ Str::limit($motor->short_description, 55) }}</small></td>
+                            <td><a href="{{ route('motor.show', $motor) }}" target="_blank">{{ $motor->name }} </a> <br> <small>Feltöltési dátum: {{ $motor->created_at->toDateString() }}  -  Leírás: {{ Str::limit($motor->short_description, 55) }} </small></td>
                             <td style="width: 150px">
                                 <a href="{{ route('admin.motor.edit', $motor) }}"
                                     class="btn btn-outline-success btn-block btn-sm mt-2">
@@ -94,7 +135,9 @@
 
 
     <div class="d-flex justify-content-center pb-3 mt-3">
-        {{ $motors->links() }}
+        {{-- {{ $motors->links() }} --}}
+        {{ $motors->appends(request()->query())->links() }}
+
     </div>
 
 
@@ -162,6 +205,10 @@ body {
             color: #fff;
             background-color: #ffe7e7 !important;
             border-color: #fed2d2 !important;
+        }
+
+        .zoom-on-hover:hover {
+            transform: scale(2.5); /* Увеличение в 1.5 раза */
         }
     </style>
 @stop

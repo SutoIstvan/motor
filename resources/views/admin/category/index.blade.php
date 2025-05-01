@@ -39,9 +39,9 @@
                 <div class="float-right">
                     <form method="get" action="{{ url()->current() }}">
                         <select class="form-control form-control-sm" name="perPage" id="perPage" onchange="this.form.submit()">
-                            <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
-                            <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
-                            <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
+                            <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
                         </select>
                     </form>
                 </div>

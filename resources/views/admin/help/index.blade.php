@@ -37,9 +37,9 @@
                 <div class="float-right">
                     <form method="get" action="{{ url()->current() }}">
                         <select class="form-control form-control-sm" name="perPage" id="perPage" onchange="this.form.submit()">
-                            <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
-                            <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
-                            <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
+                            <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ request('perPage') == 10 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('perPage') == 20 ? 'selected' : '' }}>100</option>
                         </select>
                     </form>
                 </div>
@@ -53,6 +53,7 @@
 
                     @foreach ($helps as $help)
                         <tr>
+                            <td style="width: 50px"><i class="{{ $help->ico }}"></i></td>
                             <td>{{ $help->title }}</td>
                             <td style="width: 150px">
                                 <a href="{{ route('admin.help.edit', $help) }}"
@@ -79,7 +80,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center mb-4 mt-3">
+    <div class="d-flex justify-content-center pb-3 mt-3">
         {{ $helps->links() }}
     </div>
 

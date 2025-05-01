@@ -15,7 +15,7 @@ class HelpController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('perPage', 5);
+        $perPage = $request->input('perPage', 25);
         $helps = Help::paginate($perPage);
 
         return view('admin.help.index', compact('helps'));
@@ -34,10 +34,11 @@ class HelpController extends Controller
      */
     public function store(Request $request)
     {
-
+        //dd($request);
         $this->validate($request, [
             'title' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'customRadio' => 'required'
         ]);
 
         $content = $request->content;
@@ -63,6 +64,7 @@ class HelpController extends Controller
         Help::create([
             'title' => $request->input('title'),
             'content' => $content,
+            'ico' => $request->input('customRadio')
         ]);
 
         return redirect()->route('admin.help.index')->with('success', 'A hasznos menüpont sikeresen hozzáadva.');
@@ -93,12 +95,19 @@ class HelpController extends Controller
         $request->validate([
             'title' => 'required|min:3|max:255',
             'content' => 'required|string',
+            'customRadio' => 'required'
         ]);
 
         try {
             $content = $request->content;
-            $dom = new DOMDocument();
-            $dom->loadHtml(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+            try {
+                $dom = new \DOMDocument();
+                $dom->loadHtml(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            } catch (\Exception $e) {
+                $errors = collect(['DOMDocument Error' => [$e->getMessage()]]);
+            }
+
             $imageFile = $dom->getElementsByTagName('img');
 
             foreach($imageFile as $item => $image){
@@ -122,6 +131,7 @@ class HelpController extends Controller
             $content = $dom->saveHTML();
 
             $help->title = $request->input('title');
+            $help->ico = $request->input('customRadio');
             $help->content = $content;
             $help->save();
 

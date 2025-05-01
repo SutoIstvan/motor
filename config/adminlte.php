@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'use_ico_only' => false,
+    'use_ico_only' => true,
     'use_full_favicon' => false,
 
     /*
@@ -302,8 +302,8 @@ return [
         ],
 
         [
-            'text' => 'Home',
-            'url'  => 'admin',
+            'text' => 'Vezérlőpult',
+            'url'  => 'admin/',
             'icon' => 'fas fa-fw fa-home',
         ],
         [
@@ -318,22 +318,53 @@ return [
             'icon' => 'fas fa-fw fa-calendar-alt',
         ],
         [
-            'text' => 'Kivitel',
-            'url'  => 'admin/category',
-            'icon' => 'fas fa-fw fa-plus-square',
-            'active' => ['admin/category*']
-        ],
-        [
-            'text' => 'Márka',
-            'url'  => 'admin/brand',
-            'icon' => 'fas fa-fw fa-plus-square',
-            'active' => ['admin/brand*']
+            'text' => 'Felvásárlás',
+            'url'  => 'admin/buying',
+            'icon' => 'fas fa-fw fa-cart-plus',
+            'active' => ['admin/buying*']
         ],
         [
             'text' => 'Hasznos',
             'url'  => 'admin/help',
             'icon' => 'fas fa-fw fa-book',
             'active' => ['admin/help*']
+        ],
+        [
+            'text' => 'Statisztika',
+            'url'  => 'admin/visit',
+            'icon' => 'fas fa-fw fa-chart-bar',
+            'active' => ['admin/visit*']
+        ],
+        [
+            'text'    => 'Beállítások',
+            'icon'    => 'fas fa-fw fa-sliders-h',
+            'submenu' => [
+                [
+                    'text' => 'Felhasználók',
+                    'url'  => 'admin/user',
+                    'icon' => 'fas fa-fw fa-user',
+                    'active' => ['admin/user*']
+                ],
+                [
+                    'text' => 'Euro árfolyam',
+                    'url'  => 'admin/exchangerate',
+                    'icon' => 'fas fa-fw fa-euro-sign',
+                    'active' => ['admin/exchangerate']
+                ],
+                [
+                    'text' => 'Kivitel',
+                    'url'  => 'admin/category',
+                    'icon' => 'fas fa-fw fa-plus-square',
+                    'active' => ['admin/category*']
+                ],
+                [
+                    'text' => 'Márka',
+                    'url'  => 'admin/brand',
+                    'icon' => 'fas fa-fw fa-plus-square',
+                    'active' => ['admin/brand*']
+                ],
+
+            ],
         ],
         [
             'text'    => 'Oldalak szerkesztése',
@@ -351,7 +382,7 @@ return [
                 ],
                 [
                     'text' => 'Felvásárlás',
-                    'url'  => '#',
+                    'url'  => 'admin/felvasarlas',
                     'icon' => 'fas fa-fw fa-cart-plus',
                 ],
                 [

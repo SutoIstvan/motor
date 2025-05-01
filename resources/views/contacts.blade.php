@@ -1,5 +1,8 @@
 @extends('layouts.pages')
 
+@section('title', 'Márka Motorcenter - Elérhetőségek')
+@section('description', 'Márka Motorcenter Cim: Paks Nyárfa utca 2. Tel: +36 30 293 6241')
+
 @section('css')
 <style>
 p {
@@ -84,12 +87,14 @@ p {
 
 
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            {{-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10962.45902940224!2d18.8530333!3d46.6146158!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47425c5fe20dd68d%3A0x4411e2d0ea9303fe!2sM%C3%A1rka%20Motorcenter%20Bt.!5e0!3m2!1sru!2sua!4v1697271680727!5m2!1sru!2sua"
                 width="100%" height="500px" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
+            </div> --}}
 
-
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2740.6084176773!2d18.850438275349134!3d46.6147410711161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47425c5fe20dd68d%3A0x4411e2d0ea9303fe!2sM%C3%A1rka%20Motorcenter%20Bt.!5e0!3m2!1shu!2sua!4v1706078941071!5m2!1shu!2sua"
+            width="100%" height="500px" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
         {{-- <div class="row">
             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                 <div class="send_message_box_content">

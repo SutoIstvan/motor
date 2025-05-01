@@ -14,7 +14,7 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('perPage', 5);
+        $perPage = $request->input('perPage', 25);
         $brands = Brand::paginate($perPage);
 
         return view('admin.brand.index' , compact('brands'));

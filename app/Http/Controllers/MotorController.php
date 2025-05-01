@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Motor;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Images;
+use App\Models\Visits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Facades\Log;
+
 
 class MotorController extends Controller
 {
@@ -16,10 +21,40 @@ class MotorController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('perPage', 5);
-        $motors = Motor::paginate($perPage);
+        // $perPage = $request->input('perPage', 25);
+        // $motors = Motor::paginate($perPage);
 
-        return view('admin.motor.index' , compact('motors'));
+        // return view('admin.motor.index' , compact('motors'));
+
+        $perPage = $request->input('perPage', 1000);
+        $orderBy = $request->input('orderBy', 'name_asc'); // Значення за замовчуванням 'created_at'
+
+        // Перевірка, чи коректний параметр orderBy
+        $validOrders = ['created_at', 'name_asc', 'name_desc', 'updated_at_asc', 'updated_at_desc'];
+        if (!in_array($orderBy, $validOrders)) {
+            $orderBy = 'created_at'; // Встановлення значення за замовчуванням, якщо передано некоректне значення
+        }
+
+        // Сортування за значенням orderBy
+        switch ($orderBy) {
+            case 'name_asc':
+                $motors = Motor::orderBy('name')->paginate($perPage);
+                break;
+            case 'name_desc':
+                $motors = Motor::orderByDesc('name')->paginate($perPage);
+                break;
+            case 'updated_at_asc':
+                $motors = Motor::orderBy('updated_at')->paginate($perPage);
+                break;
+            case 'updated_at_desc':
+                $motors = Motor::orderByDesc('updated_at')->paginate($perPage);
+                break;
+            default:
+                $motors = Motor::orderBy('created_at')->paginate($perPage);
+                break;
+        }
+
+        return view('admin.motor.index', compact('motors'));
     }
 
     /**
@@ -38,7 +73,7 @@ class MotorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
         //dd($request);
 
         $price = $request->input('price');
@@ -114,7 +149,7 @@ class MotorController extends Controller
             'performance' => $request->input('performance'),
             'condition' => $request->input('condition'),
             'top' => $request->input('top') == 'on' ? 1 : 0,
-            'driver_license' => $request->input('driver_license') == 'yes' ? 1 : 0,
+            'driver_license' => $request->input('driver_license'),
             'main_image' => $mainImagePath,
             'video' => $request->input('video'),
             'images_id' => $request->input('images_id'),
@@ -180,6 +215,13 @@ class MotorController extends Controller
         //
     }
 
+    public function archive(Motor $motor)
+    {
+        $motors = Motor::onlyTrashed()->paginate(25);
+
+        return view('admin.motor.archive', compact('motors'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -196,7 +238,13 @@ class MotorController extends Controller
      */
     public function update(Request $request, Motor $motor)
     {
-        //dd($request);
+
+        $request->merge([
+            'price' => str_replace(' ', '', $request->input('price')),
+            'discount_price' => str_replace(' ', '', $request->input('discount_price')),
+        ]);
+
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3|max:50',
             'price' => 'required|numeric|min:3|max:50000000',
@@ -225,15 +273,26 @@ class MotorController extends Controller
                 ->withInput();
         }
 
+        // Изменение порядка картинок
+        if ($request->has('image_order') && !empty($request->input('image_order'))) {
+            $order = json_decode($request->input('image_order'), true);
+    
+            // Обновляем порядок картинок
+            foreach ($order as $item) {
+                Images::where('id', $item['id'])
+                    ->update(['position' => $item['position']]);
+            }
+        }
+
         $topValue = $request->input('top') == 'on' ? 1 : 0;
-        $driver_yes = $request->input('driver_license') == 'yes' ? 1 : 0;
+        $driver_yes = $request->input('driver_license');
 
         $validatedData = $validator->validated();
 
 
         $motor->name = $validatedData['name'];
-        $motor->price = $validatedData['price'];
-        $motor->discount_price = $validatedData['discount_price'];
+        // $motor->price = $validatedData['price'];
+        // $motor->discount_price = $validatedData['discount_price'];
         $motor->description = $validatedData['description'];
         $motor->short_description = $validatedData['short_description'];
         $motor->cylinders = $validatedData['cylinders'];
@@ -248,10 +307,21 @@ class MotorController extends Controller
         $motor->category_id = $validatedData['category'];
         $motor->brand_id = $validatedData['brand'];
 
+        if ($validatedData['price'] != $motor->price) {
+            // Збереження попередньої ціни у полі old_price
+            $motor->discount_price = $motor->price;
+            $motor->price = $validatedData['price'];
+
+        }
+
+
         if ($request->hasFile('main_image')) {
-            if ($motor->main_image && Storage::exists($motor->main_image)) {
-                Storage::delete($motor->main_image);
-            }
+            // if ($motor->main_image && Storage::exists($motor->main_image)) {
+            //     unlink( $motor->main_image );
+            //     // Storage::delete($motor->main_image);
+            // }
+            $url = str_replace('storage/', '', $motor->main_image);
+            Storage::disk('public')->delete($url);
 
             $mainImage = $request->file('main_image');
             $filename = uniqid('main_image_') . '.' . $mainImage->getClientOriginalExtension();
@@ -270,7 +340,12 @@ class MotorController extends Controller
 
             foreach ($currentImages as $currentImage) {
                 if (!in_array($currentImage->url, $newImages)) {
-                    Storage::delete($currentImage->url);
+                    // Storage::delete($currentImage->url);
+                    // unlink( $currentImage->url );
+
+                    $url = str_replace('storage/', '', $currentImage->url);
+					Storage::disk('public')->delete($url);
+
                     $currentImage->delete();
                 }
             }
@@ -286,6 +361,8 @@ class MotorController extends Controller
             }
         }
 
+
+
         $motor->images_id = $motorId;
 
         $motor->save();
@@ -298,45 +375,39 @@ class MotorController extends Controller
      */
     public function destroy(Motor $motor)
     {
-        // Storage::deleteDirectory('public/storage/motors/' . $motor->id);
+        if($motor->trashed())
+        {
+            $directory = 'motors/' . $motor->id;
 
-        $directory = public_path('storage/motors/' . $motor->id);
-        // $directory = 'public/storage/motors/' . $motor->id;
-        if (Storage::exists($directory)) {
-            // Выводим отладочное сообщение, чтобы убедиться в правильности пути
-            info('Directory exists: ' . $directory);
+            if (Storage::disk('public')->exists($directory)) {
+                info('Directory exists: ' . $directory);
+    
+                try {
+                    Storage::disk('public')->deleteDirectory($directory);
+                    info('Directory deleted: ' . $directory);
+                } catch (\Exception $e) {
+                    info('Error deleting directory: ' . $e->getMessage());
+                }
+            } else {
+                info('Directory not found: ' . $directory);
+            }
+    
+            $motor->images()->delete();
+            $motor->forceDelete();
 
-            // Удаляем изображения и папку
-            Storage::deleteDirectory($directory);
-        } else {
-            // Выводим отладочное сообщение, если папка не найдена
-            info('Directory not found: ' . $directory);
+            return redirect()->back()->with('success', 'Motor véglegesen törölve');
         }
 
-        $motor->images()->delete();
-
         $motor->delete();
+
         return redirect()->back()->with('success', 'Motor törölve');
     }
 
-    // public function destroy(Motor $motor)
-    // {
-    //     // Вывод информации о директории перед удалением
-    //     // $motorId = $motor->id;
-    //     // $folderPath = public_path('storage\motors\\' . $motorId);
-    //     // dd($folderPath);
+    public function restore(Motor $motor)
+    {
+        $motor->restore();
 
-    //     Storage::deleteDirectory('public\storage\motors\\' . $motor->id);
-
-
-    //     // Удаляем изображения, связанные с мотоциклом
-    //     $motor->images()->delete();
-
-    //     // Удаляем сам мотоцикл
-    //     $motor->delete();
-
-    //     return redirect()->back()->with('success', 'Motor törölve');
-    // }
-
+        return redirect()->back()->with('success', 'Motor visszaállítva');
+    }
 
 }

@@ -3693,7 +3693,7 @@
 
  @media screen and (max-width: 575px){
     .card-title {
-        font-size: 3vw !important;
+        font-size: 5vw !important;
         font-weight: 300 !important;
         color: var(--e-global-color-primary);
     }

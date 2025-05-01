@@ -1,5 +1,8 @@
 @extends('layouts.pages')
 
+@section('title', 'Márka Motorcenter - Bemutatkozás')
+@section('description', 'Cégünk 2003 januárjában családi vállalkozásként használt robogók forgalmazásával, alkatrészek és kiegészítő felszerelések értékesítésével kezdte meg tevékenységét, egy kis boltban a város szívében.')
+
 @section('content')
 
 <section class="send_message_section" style="padding: 0px 0px 65px 0px;">

@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('performance');
             $table->string('condition')->nullable();
             $table->string('top')->default(false);
-            $table->boolean('driver_license')->default(true);
+            $table->string('driver_license');
+            // $table->boolean('driver_license')->default(true);
             $table->string('main_image')->nullable();
             $table->string('video')->nullable();
             $table->string('images_id')->nullable();

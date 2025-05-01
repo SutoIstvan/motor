@@ -19,16 +19,16 @@
                         <h4>Linkek</h4>
                         <ul class="list-unstyled">
                             <li>
-                                <a href="#">Címlap</a>
+                                <a href="/">Címlap</a>
                             </li>
                             <li>
-                                <a href="#">Motorok</a>
+                                <a href="/motors">Motorok</a>
                             </li>
                             <li>
-                                <a href="#">Elérhetőségek</a>
+                                <a href="/contacts">Elérhetőségek</a>
                             </li>
                             <li>
-                                <a href="#">Bemutatkozás</a>
+                                <a href="/help">Hasznos</a>
                             </li>
                         </ul>
                     </div>
@@ -38,7 +38,10 @@
                         <h4>Social</h4>
                         <ul class="list-unstyled">
                             <li>
-                                <a href="#">Facebook</a>
+                                <a href="https://www.facebook.com/profile.php?id=100063681814675" target="_blank">Facebook</a>
+                            </li>
+                            <li>
+                                <a href="https://www.tiktok.com/@lszlmrkusmrka?_t=8kwhc2sS9a4&_r=1">Tik Tok</a>
                             </li>
                             <li>
                                 <a href="#">Instagram</a>
@@ -46,9 +49,7 @@
                             <li>
                                 <a href="#">Youtube</a>
                             </li>
-                            <li>
-                                <a href="#">Tik Tok</a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -58,7 +59,7 @@
                         <ul class="list-unstyled">
                             <li>
                                 <i class="fa-solid fa-phone"></i>
-                                <a href="tel:+61383766284" class="text-decoration-none">+36 30 293 - 6241</a>
+                                <a href="tel:+36302936241" class="text-decoration-none">+36 30 293 - 6241</a>
                             </li>
                             <li>
                                 <i class="fa-sharp fa-solid fa-envelope"></i>
@@ -72,6 +73,28 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="mt-4 col-lg-2 col-md-6 col-sm-6 col-xs-12 d-lg-none d-block">
+                    <div class="explore_col">
+                        <h4>Social</h4>
+                        <ul class="list-unstyled two-columns">
+                            <li>
+                                <a href="https://www.facebook.com/profile.php?id=100063681814675" target="_blank">Facebook</a>
+                            </li>
+                            <li>
+                                <a href="https://www.tiktok.com/@lszlmrkusmrka?_t=8kwhc2sS9a4&_r=1">Tik Tok</a>
+                            </li>
+                            <li>
+                                <a href="#">Instagram</a>
+                            </li>
+                            <li>
+                                <a href="#">Youtube</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+
             </div>
         </div>
     </div>

@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
+use App\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Images;
 use App\Models\Category;
+use Coderflex\Laravisit\Concerns\CanVisit;
+use Coderflex\Laravisit\Concerns\HasVisits;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Motor extends Model
+class Motor extends Model implements CanVisit
 {
     use HasFactory;
+    use SoftDeletes;
+    use HasVisits;
 
     protected $fillable = [ 'name' ,
                             'price' ,
@@ -44,5 +51,14 @@ class Motor extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function scopeFilter(Builder $builder, QueryFilter $filter){
+        return $filter->apply($builder);
     }
 }
