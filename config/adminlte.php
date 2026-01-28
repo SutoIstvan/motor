@@ -336,6 +336,12 @@ return [
             'active' => ['admin/visit*']
         ],
         [
+            'text' => 'Banner',
+            'url'  => 'admin/banner',
+            'icon' => 'fas fa-fw fa-file-image',
+            'active' => ['admin/banner*']
+        ],
+        [
             'text'    => 'Beállítások',
             'icon'    => 'fas fa-fw fa-sliders-h',
             'submenu' => [

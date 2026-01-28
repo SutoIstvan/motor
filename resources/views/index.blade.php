@@ -47,7 +47,8 @@
 </style>
 
 <body>
-
+    @include('layouts.banner')
+<!-- @dump($banner); -->
     <div class="banner-section-outer">
         <header>
             <div class="main_header">

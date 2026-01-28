@@ -224,6 +224,8 @@
 
     @include('layouts.header')
 
+    @include('layouts.banner')
+
     @yield('content')
 
     <!-- FOOTER SECTION -->

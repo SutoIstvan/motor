@@ -6,6 +6,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BuyingController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\ExchangeRateController;
@@ -100,8 +101,11 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
     Route::get('/buying/{buying}', [BuyingController::class, 'show'])->name('admin.buying.show');
     Route::delete('/buying/{buying}', [BuyingController::class, 'destroy'])->name('admin.buying.destroy');
 
+    Route::get('/banner', [BannerController::class, 'index'])->name('admin.banner.index');
+    Route::post('/banner/upload', [BannerController::class, 'upload'])->name('admin.banner.upload');
+    Route::delete('/banner', [BannerController::class, 'destroy'])->name('admin.banner.delete');
 });
 
-Route::any('{any}', function () {
-    return redirect('/'); // Редирект на главную страницу
-})->where('any', '^(?!api).*$');
+// Route::any('{any}', function () {
+//     return redirect('/'); // Редирект на главную страницу
+// })->where('any', '^(?!api).*$');
