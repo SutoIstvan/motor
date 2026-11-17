@@ -42,7 +42,7 @@ class HomeController extends Controller
         $visits->visit()->withIp();
 
         $menus = Menu::all();
-        $brands = Brand::all();
+        $brands = Brand::orderBy('name', 'asc')->get();
         $categories = Category::all();
         $index = Index::find(1);
         $topmotors = Motor::where('top', 1)->latest()->take(3)->get();
@@ -108,7 +108,7 @@ class HomeController extends Controller
         $motors = $query->paginate($perPage);
 
         $menus = Menu::all();
-        $brands = Brand::all();
+        $brands = Brand::orderBy('name', 'asc')->get();
         $categories = Category::all();
 
         $motorcount = Motor::count();
@@ -427,7 +427,29 @@ class HomeController extends Controller
             'leiras' => 'required|string|max:1500',
             'inlineRadioOptions' => 'required|string|max:255',
             'rendszam' => 'max:255',
+            'cf-turnstile-response' => 'required|string',
+        ], [
+            'cf-turnstile-response.required' => 'Kérjük, igazolja, hogy nem robot!',
         ]);
+
+        try {
+            $verifyResponse = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                'secret' => config('services.turnstile.secret'),
+                'response' => $request->input('cf-turnstile-response'),
+                'remoteip' => $request->ip(),
+            ]);
+
+            if (!$verifyResponse->successful() || !$verifyResponse->json('success')) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['cf-turnstile-response' => 'A captcha ellenőrzése sikertelen. Kérjük, próbálja újra!']);
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Turnstile verification error: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['cf-turnstile-response' => 'Hiba történt a captcha ellenőrzése során. Kérjük, próbálja újra!']);
+        }
 
         $buying = new Buying();
         $buying->name = $request->input('name');

@@ -62,7 +62,7 @@ class MotorController extends Controller
      */
     public function create()
     {
-        $brands = Brand::all();
+        $brands = Brand::orderBy('name', 'asc')->get();
         $categories = Category::all();
 
         return view('admin.motor.create', compact('brands' , 'categories'));
@@ -227,7 +227,7 @@ class MotorController extends Controller
      */
     public function edit(Motor $motor)
     {
-        $brands = Brand::all();
+        $brands = Brand::orderBy('name', 'asc')->get();
         $categories = Category::all();
 
         return view('admin.motor.edit', compact('motor', 'brands', 'categories'));
