@@ -1,14 +1,14 @@
 @extends('layouts.pages')
 
 @section('title', 'Márka Motorcenter - Felvásárlás')
-@section('description', 'Cégünk foglakozik azonnali, készpénzes motor felvásárlással, rögtön a kezébe adjuk a pénzt, ha előnyös üzletet tudunk kötni.')
+@section('description', 'Cégünk foglakozik azonnali, készpénzes motor felvásárlással, rögtön a kezébe adjuk a pénzt, ha
+    előnyös üzletet tudunk kötni.')
 
 @section('stylesheet')
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         p {
             font-size: 16px;
-            line-height: 5px;
         }
 
         .send_message_form_box_content textarea {
@@ -24,13 +24,13 @@
         }
 
         /* .send_message_form_box_content {
-                background-color: #9c5252;
-                width: 99%;
-                border-radius: 15px;
-                padding: 60px 25px;
-                border-bottom: 2px solid var(--e-global-color-accent);
-                margin-left: 10px;
-            } */
+                    background-color: #9c5252;
+                    width: 99%;
+                    border-radius: 15px;
+                    padding: 60px 25px;
+                    border-bottom: 2px solid var(--e-global-color-accent);
+                    margin-left: 10px;
+                } */
     </style>
 @stop
 
@@ -39,7 +39,7 @@
     <section class="send_message_section" style="padding: 10px 0px 0px 0px;">
         <div class="container">
 
-            @if($errors->any())
+            @if ($errors->any())
                 @foreach ($errors->all() as $error)
                     <div class="alert alert-warning mt-5 justify-content-center" style="text-align: center" role="alert">
                         <strong>{{ $error }}</strong>
@@ -200,11 +200,13 @@
                 </form> --}}
 
 
-                <form action="{{ route('buying.store') }}" method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                <form action="{{ route('buying.store') }}" method="POST" class="row g-3 needs-validation"
+                    enctype="multipart/form-data" novalidate>
                     @csrf
                     <div class="col-md-4">
                         <label for="validationname" class="form-label">Név</label>
-                        <input name="name" type="text" class="form-control" id="validationname" value="{{ old('name') }}" required>
+                        <input name="name" type="text" class="form-control" id="validationname"
+                            value="{{ old('name') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -214,7 +216,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="validationtel" class="form-label">Telefonszám</label>
-                        <input name="tel" type="text" class="form-control" id="validationtel" value="{{ old('tel') }}" required>
+                        <input name="tel" type="text" class="form-control" id="validationtel"
+                            value="{{ old('tel') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -227,8 +230,7 @@
                         <div class="input-group has-validation">
                             <span class="input-group-text" id="inputGroupPrepend">@</span>
                             <input name="email" type="email" class="form-control" id="validationemail"
-                                value="{{ old('email') }}"
-                                aria-describedby="inputGroupPrepend" required>
+                                value="{{ old('email') }}" aria-describedby="inputGroupPrepend" required>
                             <div class="valid-feedback">
                                 Helyes!
                             </div>
@@ -240,7 +242,8 @@
 
                     <div class="col-md-4">
                         <label for="validationgyartmany" class="form-label">Gyártmány</label>
-                        <input name="gyartmany" type="text" class="form-control" id="validationgyartmany" value="{{ old('gyartmany') }}" required>
+                        <input name="gyartmany" type="text" class="form-control" id="validationgyartmany"
+                            value="{{ old('gyartmany') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -250,7 +253,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="validationtipus" class="form-label">Típus</label>
-                        <input name="tipus" type="text" class="form-control" id="validationtipus" value="{{ old('tipus') }}" required>
+                        <input name="tipus" type="text" class="form-control" id="validationtipus"
+                            value="{{ old('tipus') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -260,7 +264,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="validationkm" class="form-label">Km</label>
-                        <input name="km" type="text" class="form-control" id="validationkm" value="{{ old('km') }}" required>
+                        <input name="km" type="text" class="form-control" id="validationkm"
+                            value="{{ old('km') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -271,7 +276,8 @@
 
                     <div class="col-md-4">
                         <label for="validationallapot" class="form-label">Állapot</label>
-                        <input name="allapot" type="text" class="form-control" id="validationallapot" value="{{ old('allapot') }}" required>
+                        <input name="allapot" type="text" class="form-control" id="validationallapot"
+                            value="{{ old('allapot') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -281,7 +287,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="validationev" class="form-label">Évjárat</label>
-                        <input name="ev" type="text" class="form-control" id="validationev" value="{{ old('ev') }}" required>
+                        <input name="ev" type="text" class="form-control" id="validationev"
+                            value="{{ old('ev') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -291,7 +298,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="validationar" class="form-label">Irányár</label>
-                        <input name="ar" type="text" class="form-control" id="validationar" value="{{ old('ar') }}" required>
+                        <input name="ar" type="text" class="form-control" id="validationar"
+                            value="{{ old('ar') }}" required>
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -301,8 +309,10 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label for="validationlink" class="form-label">Link a létező hirdetményre: hasznaltauto.hu kepesmotor.hu stb.</label>
-                        <input name="link" type="text" class="form-control" id="validationlink" value="{{ old('link') }}">
+                        <label for="validationlink" class="form-label">Link a létező hirdetményre: hasznaltauto.hu
+                            kepesmotor.hu stb.</label>
+                        <input name="link" type="text" class="form-control" id="validationlink"
+                            value="{{ old('link') }}">
                         <div class="valid-feedback">
                             Helyes!
                         </div>
@@ -352,34 +362,45 @@
                         <label for="validationleiras" class="form-label">Okmányok jellege</label>
 
                         <div class="form-check col-md-5 ms-3 mt-3">
-                            <input type="radio" class="form-check-input" id="validationFormCheck2" name="inlineRadioOptions" value="magyar" onchange="toggleInput()" required {{ old('inlineRadioOptions') == 'magyar' ? 'checked' : '' }}>
+                            <input type="radio" class="form-check-input" id="validationFormCheck2"
+                                name="inlineRadioOptions" value="magyar" onchange="toggleInput()" required
+                                {{ old('inlineRadioOptions') == 'magyar' ? 'checked' : '' }}>
                             <label class="form-check-label" for="validationFormCheck2">Magyarországi</label>
                             <div class="invalid-feedback">Kötelező!</div>
 
                         </div>
-                          <div class="form-check col-md-3 mt-3">
-                            <input type="radio" class="form-check-input" id="validationFormCheck3" name="inlineRadioOptions" value="kulfodi" onchange="toggleInput()" required {{ old('inlineRadioOptions') == 'kulfodi' ? 'checked' : '' }}>
+                        <div class="form-check col-md-3 mt-3">
+                            <input type="radio" class="form-check-input" id="validationFormCheck3"
+                                name="inlineRadioOptions" value="kulfodi" onchange="toggleInput()" required
+                                {{ old('inlineRadioOptions') == 'kulfodi' ? 'checked' : '' }}>
                             <label class="form-check-label" for="validationFormCheck3">Külföldi</label>
                             {{-- <div class="invalid-feedback">More example invalid feedback text</div> --}}
-                          </div>
+                        </div>
 
                     </div>
-                    <div class="col-md-4 mt-3" id="rendszamDiv" style="{{ old('inlineRadioOptions') == 'magyar' ? 'display: block;' : 'display: none;' }}">
+                    <div class="col-md-4 mt-3" id="rendszamDiv"
+                        style="{{ old('inlineRadioOptions') == 'magyar' ? 'display: block;' : 'display: none;' }}">
                         <label for="rendszam" class="form-label">Rendszám</label>
-                        <input name="rendszam" type="text" class="form-control" id="rendszam" value="{{ old('rendszam') }}" {{ old('inlineRadioOptions') == 'magyar' ? 'required' : '' }}>
+                        <input name="rendszam" type="text" class="form-control" id="rendszam"
+                            value="{{ old('rendszam') }}" {{ old('inlineRadioOptions') == 'magyar' ? 'required' : '' }}>
                         <div class="invalid-feedback">Rendszám kötelező!</div>
                     </div>
 
 
                     <div class="mb-2 mt-4">
-                        <label for="validationleiras" class="form-label">Fényképek száma 5 - 10 kép, mindegyik mérete max 5 MB (jpg, jpeg)</label>
-                        <input type="file" class="form-control" aria-label="file example" id="images" name="images_id[]" accept=".jpg, .jpeg" multiple required>
+                        <label for="validationleiras" class="form-label">Fényképek száma 5 - 10 kép, mindegyik mérete max
+                            5 MB (jpg, jpeg)</label>
+                        <input type="file" class="form-control" aria-label="file example" id="images"
+                            name="images_id[]" accept=".jpg, .jpeg" multiple required>
                         <div class="valid-feedback">Helyes!</div>
-                        <div class="invalid-feedback">Fényképek feltöltése kötelező! Legalább 5 kép, max 10 kép, mindegyik mérete legfeljebb 5 MB lehet. Formátum (jpg, jpeg)</div>
+                        <div class="invalid-feedback">Fényképek feltöltése kötelező! Legalább 5 kép, max 10 kép, mindegyik
+                            mérete legfeljebb 5 MB lehet. Formátum (jpg, jpeg)</div>
                     </div>
 
                     <div class="col-md-12">
-                        <p class="me-1 ms-1" style="font-size: 16px">Az alábbi űrlap kitöltésével Ön beleegyezik személyes adatainak gyűjtésébe és tárolásába. Az adatokat kizárólag a webhelyünkön történő kommunikációra használjuk, és semmilyen körülmények között nem adjuk át harmadik feleknek.</p>
+                        <p class="me-1 ms-1" style="font-size: 16px">Az alábbi űrlap kitöltésével Ön beleegyezik személyes
+                            adatainak gyűjtésébe és tárolásába. Az adatokat kizárólag a webhelyünkön történő kommunikációra
+                            használjuk, és semmilyen körülmények között nem adjuk át harmadik feleknek.</p>
 
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
@@ -393,13 +414,16 @@
                     </div>
 
                     <div class="col-md-12 d-flex flex-column align-items-center mt-4">
-                        <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.key') }}" data-theme="light" data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"></div>
+                        <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.key') }}"
+                            data-theme="light" data-callback="onTurnstileSuccess"
+                            data-expired-callback="onTurnstileExpired"></div>
                         @error('cf-turnstile-response')
                             <div class="text-danger mt-2 fw-bold" style="font-size: 14px;">
                                 {{ $message }}
                             </div>
                         @enderror
-                        <div id="turnstile-client-error" class="text-danger mt-2 fw-bold" style="display: none; font-size: 14px;">
+                        <div id="turnstile-client-error" class="text-danger mt-2 fw-bold"
+                            style="display: none; font-size: 14px;">
                             Kérjük, végezze el a captcha ellenőrzést!
                         </div>
                     </div>
@@ -503,7 +527,6 @@
                 this.setCustomValidity('');
             }
         });
-
     </script>
 
 @endsection
